@@ -138,6 +138,7 @@ if {[info exists synopsys_program_name]} {
         } else { setNanoRouteMode -drouteEndIteration 5 }
     
         if [is_common_ui_mode ] {
+            if { [ regexp 23 [get_db program_version] ] } { set_db opt_enable_podv2_clock_opt_flow false }
             set_db design_early_clock_flow false
             #set_db route_design_with_via_in_pin true
             set_db route_design_with_via_only_for_block_cell_pin false
@@ -147,6 +148,7 @@ if {[info exists synopsys_program_name]} {
             set_db opt_useful_skew_post_route false
             set_db opt_useful_skew_pre_cts false
         } else {
+            if { [ regexp 23 [get_db program_version] ] } {  setOptMode -opt_enable_podv2_clock_opt_flow false }
             setDesignMode -earlyClockFlow false
             #setNanoRouteMode -routeWithViaInPin true
             #setNanoRouteMode -routeWithViaInPin 1:1

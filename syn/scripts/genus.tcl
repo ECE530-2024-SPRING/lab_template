@@ -48,11 +48,6 @@ if { [info exists enable_dft] &&  $enable_dft  } {
    source -echo -verbose ../../${top_design}.dft_config.tcl
 }
 
-if { [ info exists add_ios ] && $add_ios } {
-   source -echo -verbose ../scripts/genus-add_ios.tcl
-   # Source the design dependent code that will put IOs on different sides
-   source ../../$top_design.add_ios.tcl
-}
 
 # This needs to be after add_ios
 update_names -map { {"." "_" }} -inst -force
@@ -87,6 +82,13 @@ if { [info exists enable_dft] &&  $enable_dft  } {
 #compile with ultra features and with scan FFs
 syn_map
 
+#After Genus23, any netlist ecos must be after syn_map
+
+if { [ info exists add_ios ] && $add_ios } {
+   source -echo -verbose ../scripts/genus-add_ios.tcl
+   # Source the design dependent code that will put IOs on different sides
+   source ../../$top_design.add_ios.tcl
+}
 if { [info exists enable_dft] &&  $enable_dft  } {
    if { [file exists ../../${top_design}.reg_eco.tcl] == 1 } {
       # Make eco changes to registers.

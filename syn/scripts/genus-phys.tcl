@@ -26,6 +26,8 @@ foreach i $lef_path {
 # Load the tech lef and cell lef files
 set_db lef_library "$tech_lef [glob saed*.lef]"
 
+if { [regexp 23 [get_db program_version ] ] } { set_db phys_skip_qrc_check_for_prob_extraction 1 }
+
 # Do we need this?
 #license checkout Genus_Physical_Opt
 
@@ -52,22 +54,6 @@ read_hdl -language sv ../rtl/${top_design}.sv
 # Elaborate the FIFO design
 elaborate $top_design
 
-if { $enable_dft == 1} {
-   if { [file exists ../../${top_design}.dft_eco.tcl] == 1 } {
-      # Make eco changes like instantiating a PLL.
-      source -echo -verbose ../../${top_design}.dft_eco.tcl
-   } 
-   # Setup DFT/OPCG dependencies.
-   source -echo -verbose ../../${top_design}.dft_config.tcl
-
-}
-
-if { [ info exists add_ios ] && $add_ios } {
-   source -echo -verbose ../scripts/genus-add_ios.tcl
-   # Source the design dependent code that will put IOs on different sides
-   source ../../$top_design.add_ios.tcl
-}
-
 # This needs to be after add_ios
 update_names -map { {"." "_" }} -inst -force
 update_names -map {{"[" "_"} {"]" "_"}} -inst -force
@@ -84,13 +70,6 @@ read_def ../../apr/outputs/${top_design}.floorplan.innovus.def
 
 set_db auto_ungroup none
 
-if { $enable_dft == 1} {
-   check_dft_rules
-   # Need to have test_mode port defined to run this command. 
-   fix_dft_violations -clock -async_set -async_reset -test_control test_mode  
-   report dft_registers
-
-}
 
 syn_generic -physical
 
@@ -103,6 +82,33 @@ uniquify $top_design
 #compile with ultra features and with scan FFs
 syn_map -physical
 
+# After Genus23, any netlist changes have to be done after syn_map
+if { $enable_dft == 1} {
+   if { [file exists ../../${top_design}.dft_eco.tcl] == 1 } {
+      # Make eco changes like instantiating a PLL.
+      source -echo -verbose ../../${top_design}.dft_eco.tcl
+   } 
+   # Setup DFT/OPCG dependencies.
+   source -echo -verbose ../../${top_design}.dft_config.tcl
+
+}
+
+if { [ info exists add_ios ] && $add_ios } {
+   source -echo -verbose ../scripts/genus-add_ios.tcl
+   # Source the design dependent code that will put IOs on different sides
+   source ../../$top_design.add_ios.tcl
+   # read the def again to get the IO placement
+   read_def ../../apr/outputs/${top_design}.floorplan.innovus.def
+}
+
+if { $enable_dft == 1} {
+   check_dft_rules
+   # Need to have test_mode port defined to run this command. 
+   fix_dft_violations -clock -async_set -async_reset -test_control test_mode  
+   report dft_registers
+
+}
+
 if { $enable_dft == 1} {
    if { [file exists ../../${top_design}.reg_eco.tcl] == 1 } {
       # Make eco changes like instantiating a PLL.
@@ -114,8 +120,10 @@ if { $enable_dft == 1} {
    report_scan_chains
 }
 
-# syn_opt -spatial needs extra license in newer versions
-syn_opt 
+# syn_opt -spatial needs extra license in newer versions.  In newer versions, it invokes iSpatial style.
+# syn_opt -physical is not available in newer versions.
+# syn_opt is not needed for PODV2 flow and in future, or you could do syn_opt -logical for non-physical based incremental.
+syn_opt  
 
 # output reports
 set stage genus_phys

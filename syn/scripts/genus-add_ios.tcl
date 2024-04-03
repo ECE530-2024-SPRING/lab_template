@@ -41,34 +41,37 @@ global top_design
      
      # Find all the hpins or real pins connected at the top level to the port net.
      # this is a little tricky since Genus indicates leaf pins which might cross hierarchy boundaries except for the all_connected command
-     set pins [get_db [ all_connected $port ] -if ".obj_type==*pin"] 
+     set pins [get_db [ get_pins -leaf -of_obj [get_net $port ]  ] -if ".obj_type==*pin"] 
      # disconnect seems to be working better with the get_db object instead of the text name.
      foreach_in i $pins { disconnect $i  }
+ #    create_net -name ${this_io}_net
      foreach_in i $pins { 
         # Connect arguments must have the driver pin/port followed by a load.  net name is optional, but needed if a new net.
         connect -net_name ${this_io}_net ${this_io}/DOUT [get_db $i .name ]
      }
 
      # connect up the PADIO to the original port net and connect other important PAD pins.
-     connect -net $port $port $this_io/PADIO
+#     connect -net $port $port $this_io/PADIO
+     connect -net_name $port $port $this_io/PADIO
      #connect_net [get_nets  *Logic0* ] ${this_io}/EN 
      connect 1 ${this_io}/R_EN
   } else {
-     # Find all the hpins or real pins connected at the top level to the port net.
-     # this is a little tricky since Genus indicates leaf pins which might cross hierarchy boundaries except for the all_connected command
-     set pins [get_db [ all_connected $port ] -if ".obj_type==*pin"] 
+
+# Find all the hpins or real pins connected at the top level to the port net.
+     set pins [get_db [ get_pins -leaf -of_obj [ get_net $port ] ] -if ".obj_type==*pin"] 
      # disconnect seems to be working better with the get_db object instead of the text name.
      foreach_in i $pins { disconnect $i  }
      # Connect arguments must have the driver pin/port followed by a load.  net name is optional, but needed if a new net.
+#     create_net -name ${this_io}_net
      connect -net_name ${this_io}_net [get_db $pins -if ".direction==out" ] $this_io/DIN
      # This internal driver might drive to other loads other than the port.  It might drive back into other spots in the design.
      set other_receivers [get_db $pins -if ".direction==in" ]
      if {$other_receivers!=""} { 
-        connect -net ${this_io}_net [get_db $pins -if ".direction==out" ] $other_receivers
+        connect -net_name ${this_io}_net [get_db $pins -if ".direction==out" ] $other_receivers
      }
 
      # connect up the PADIO to the original port net and connect other important PAD pins.
-     connect -net $port $this_io/PADIO $port
+     connect -net_name $port $this_io/PADIO $port
      connect 1 $this_io/EN 
      #connect_net [get_nets  *Logic0* ] $this_io/R_EN 
   }

@@ -64,6 +64,7 @@ module fifomem #(parameter DATASIZE = 8, // Memory data word width
 
 	logic [7:0]rd_cs_n;
 	logic [7:0]wr_cs_n;
+        logic [DATASIZE-1:0] rdata_tmp[8];
 
 	// 3 to 8 read address decoder
 	always@( raddr[9:7]) begin
@@ -130,9 +131,11 @@ module fifomem #(parameter DATASIZE = 8, // Memory data word width
 					 .OEB2(1'b0),
 					 .CSB2(rd_cs_n[i]),
 					 .I2(8'h00),
-					 .O2(rdata) );
+					 .O2(rdata_tmp[i]) );
+                        
 		end
-	endgenerate	
+	endgenerate
+        assign rdata = rdata_tmp[0] | rdata_tmp[1] | rdata_tmp[2] | rdata_tmp[3] | rdata_tmp[4] | rdata_tmp[5] | rdata_tmp[6] | rdata_tmp[7];
 
 endmodule
 

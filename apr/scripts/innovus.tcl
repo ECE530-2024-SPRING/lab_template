@@ -82,7 +82,7 @@ if { [regexp -nocase "f" $flow ] } {
     if { $enable_dft == 1} {
     	echo READING SCANDEF
    	 #defIn ../../syn/outputs/${top_design}.dct.scan.def
-    	defIn ../../syn/outputs/${top_design}.genus.scan.def
+    	defIn ../../syn/outputs/${top_design}.genus_phys.scan.def
     	echo FINISHED READING SCANDEF
 
        # Source SDC file with DFT constraints. 
