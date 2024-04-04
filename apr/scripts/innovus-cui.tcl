@@ -103,13 +103,17 @@ if { [regexp -nocase "p" $flow ] } {
     if { ![regexp -nocase "f" $flow ] } {
        read_db ${top_design}_floorplan.innovus }
     puts "######## STARTING PLACE #################"
+set_db design_early_clock_flow false
 set_db opt_useful_skew false
 set_db opt_useful_skew_ccopt none
 set_db opt_useful_skew_post_route false
 set_db opt_useful_skew_pre_cts false
+if { [ regexp 23 [get_db program_version] ] } { set_db opt_enable_podv2_clock_opt_flow false }
+
    if { [file exists ../scripts/${top_design}.pre.place.tcl ] } { source ../scripts/${top_design}.pre.place.tcl }
     place_opt_design
    if { [file exists ../scripts/${top_design}.post.place.tcl ] } { source ../scripts/${top_design}.post.place.tcl }
+
     set stage place.cui
     innovus_reporting $stage 0 0    
     write_db ${top_design}_place.innovus.cui
@@ -131,6 +135,7 @@ set_db opt_useful_skew_ccopt none
 set_db opt_useful_skew_post_route false
 set_db opt_useful_skew_pre_cts false
 set_db cts_update_clock_latency false
+if { [ regexp 23 [get_db program_version] ] } { set_db opt_enable_podv2_clock_opt_flow false }
 
 # /pkgs/cadence/2020-11/INNOVUS191/doc/innovusUG/CCOpt_Properties.html
 # https://support.cadence.com/apex/techpubDocViewerPage?path=innovusUG/innovusUG21.13/CCOpt_Properties.html
@@ -155,8 +160,13 @@ create_route_type -name trunk_type -route_rule CTS_RULE -top_preferred_layer M6 
 #create_route_type -name leaf_type -non_default_rule CTS_RULE -top_preferred_layer M7 -bottom_preferred_layer M6
 #set_ccopt_property -net_type leaf route_type leaf_type
 set_db route_design_detail_post_route_spread_wire false
-   if { [file exists ../scripts/${top_design}.pre.cts.tcl ] } { source ../scripts/${top_design}.pre.cts.tcl }
-    ccopt_design
+
+if { [file exists ../scripts/${top_design}.pre.cts.tcl ] } { source ../scripts/${top_design}.pre.cts.tcl }
+
+# If doing PODV2 flow use clock_opt_design, otherwise ccopt_design
+if { [regexp "23" [get_db program_version] ] } { if { [get_db opt_enable_podv2_clock_opt_flow ] } { clock_opt_design } else { ccopt_design }
+} else { ccopt_design }
+
    if { [file exists ../scripts/${top_design}.post.cts.tcl ] } { source ../scripts/${top_design}.post.cts.tcl }
     set_db timing_analysis_type ocv
     set_db timing_analysis_cppr both

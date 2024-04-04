@@ -123,6 +123,8 @@ if { [regexp -nocase "p" $flow ] } {
     }
     puts "######## STARTING PLACE #################"
 
+if { [ regexp 23 [get_db program_version] ] } { set_db opt_enable_podv2_clock_opt_flow false }
+set_db design_early_clock_flow false
 setOptMode -usefulSkew false
 setOptMode -usefulSkewCCOpt none
 setOptMode -usefulSkewPostRoute false
@@ -154,7 +156,7 @@ if { [regexp -nocase "c" $flow ] } {
 
 
 setDesignMode -process 28
-
+if { [ regexp 23 [get_db program_version] ] } { set_db opt_enable_podv2_clock_opt_flow false }
 setOptMode -usefulSkew false
 setOptMode -usefulSkewCCOpt none
 setOptMode -usefulSkewPostRoute false
@@ -186,8 +188,12 @@ set_ccopt_property -net_type trunk route_type trunk_type
 setNanoRouteMode -droutePostRouteSpreadWire false
 
    if { [file exists ../scripts/${top_design}.pre.cts.tcl ] } { source -echo -verbose ../scripts/${top_design}.pre.cts.tcl }
-    ccopt_design
-   if { [file exists ../scripts/${top_design}.post.cts.tcl ] } { source -echo -verbose ../scripts/${top_design}.post.cts.tcl }
+
+# If doing PODV2 flow use clock_opt_design, otherwise ccopt_design
+if { [regexp "23" [get_db program_version] ] } { if { [get_db opt_enable_podv2_clock_opt_flow ] } { clock_opt_design } else { ccopt_design }
+} else { ccopt_design }
+
+if { [file exists ../scripts/${top_design}.post.cts.tcl ] } { source -echo -verbose ../scripts/${top_design}.post.cts.tcl }
 
     setAnalysisMode -analysisType onChipVariation
     setAnalysisMode -cppr both

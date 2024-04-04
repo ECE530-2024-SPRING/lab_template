@@ -30,7 +30,7 @@ set dc_floorplanning 1
 set enable_dft 0
 set innovus_enable_manual_macro_placement 0
 
-set rtl_list [list ../rtl/$top_design.sv ]
+set rtl_list [list ../../syn/rtl/$top_design.sv ]
 set slow_corner "ss0p95v125c_2p25v ss0p95v125c"
 set fast_corner "ff0p95vn40c ff1p16vn40c_2p75v ff1p16vn40c"
 set synth_corners $slow_corner

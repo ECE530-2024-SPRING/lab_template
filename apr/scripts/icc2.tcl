@@ -90,7 +90,23 @@ if { [regexp -nocase "p" $flow ] } {
     if { [file exists ../scripts/${top_design}.pre.place.tcl ] } { source -echo -verbose ../scripts/${top_design}.pre.place.tcl }
 
     puts "######## STARTING PLACE #################"
-    place_opt  
+
+    if { [ info exists fc_rtl ] && $fc_rtl } {
+       # compile_fusion 
+       # Do we need this? set_app_option -name seqmap.bind_scan_pins -value true 
+       # To get the list of steps: compile_fusion -list_only 
+       compile_fusion -to initial_opto 
+       puts "######## FINISHED COMPILE_FUSION -TO INITIAL_OPTO #################"
+       # insert_dft
+       if { [file exists ../scripts/${top_design}_fc_test.tcl ] } { 
+           puts "######## INSERTING TEST #################"
+           source ../scripts/${top_design}_fc_test.tcl 
+       }
+       puts "######## STARTING COMPILE_FUSION -FROM FINAL_PLACE #################"
+       compile_fusion -from final_place
+    } else {
+       place_opt  
+    }
 
     if { [file exists ../scripts/${top_design}.post.place.tcl ] } { source -echo -verbose ../scripts/${top_design}.post.place.tcl }
 

@@ -40,7 +40,7 @@ set split_constraints 0
 # This is the raw RTL without SRAMS
 #set rtl_list [list [glob /pkgs/synopsys/32_28nm/SAED_EDK32.28nm_REF_v_15032018/SAED32_EDK/references/orca/dc/rtl/*.vhd ] ../rtl/MUX21X2.sv ]
 # This is hacked P&R netlist with SRAMs and test and level shifters removed.
-set rtl_list [list ../rtl/$top_design.sv ]
+set rtl_list [list ../../syn/rtl/$top_design.sv ]
 
 set slow_corner "ss0p75vn40c ss0p75vn40c_i0p95v ss0p75vn40c_i0p75v ss0p95vn40c ss0p95vn40c_i0p75v"
 set fast_corner "ff0p95vn40c ff0p95vn40c_i1p16v ff0p95vn40c_i0p95v ff1p16vn40c ff1p16vn40c_i1p16v ff1p16vn40c_i0p95v"
