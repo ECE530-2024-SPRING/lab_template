@@ -38,16 +38,6 @@ elaborate $top_design
 
 #return -level 9 
 
-if { [info exists enable_dft] &&  $enable_dft  } {
-
-   if { [file exists ../../${top_design}.dft_eco.tcl] == 1 } {
-      # Make eco changes like instantiating a PLL.
-      source -echo -verbose ../../${top_design}.dft_eco.tcl
-   } 
-   # Setup DFT/OPCG dependencies.
-   source -echo -verbose ../../${top_design}.dft_config.tcl
-}
-
 
 # This needs to be after add_ios
 update_names -map { {"." "_" }} -inst -force
@@ -62,6 +52,7 @@ update_names -inst -hnet -restricted {]} -convert_string "_"
 source -echo -verbose ../../constraints/${top_design}.sdc
 
 set_dont_use [get_lib_cells */DELLN* ]
+set_db design:$top_design .dft_scan_map_mode force_all
 
 syn_gen
 # any additional non-design specific constraints
@@ -69,6 +60,26 @@ syn_gen
 
 # Duplicate any non-unique modules so details can be different inside for synthesis
 uniquify $top_design
+
+#compile with ultra features and with scan FFs
+syn_map
+
+#After Genus23, any netlist ecos must be after syn_map
+if { [info exists enable_dft] &&  $enable_dft  } {
+
+   if { [file exists ../../${top_design}.dft_eco.tcl] == 1 } {
+      # Make eco changes like instantiating a PLL.
+      source -echo -verbose ../../${top_design}.dft_eco.tcl
+   } 
+   # Setup DFT/OPCG dependencies.
+   source -echo -verbose ../../${top_design}.dft_config.tcl
+}
+
+if { [ info exists add_ios ] && $add_ios } {
+   source -echo -verbose ../scripts/genus-add_ios.tcl
+   # Source the design dependent code that will put IOs on different sides
+   source ../../$top_design.add_ios.tcl
+}
 
 if { [info exists enable_dft] &&  $enable_dft  } {
 
@@ -79,16 +90,6 @@ if { [info exists enable_dft] &&  $enable_dft  } {
 
 }
 
-#compile with ultra features and with scan FFs
-syn_map
-
-#After Genus23, any netlist ecos must be after syn_map
-
-if { [ info exists add_ios ] && $add_ios } {
-   source -echo -verbose ../scripts/genus-add_ios.tcl
-   # Source the design dependent code that will put IOs on different sides
-   source ../../$top_design.add_ios.tcl
-}
 if { [info exists enable_dft] &&  $enable_dft  } {
    if { [file exists ../../${top_design}.reg_eco.tcl] == 1 } {
       # Make eco changes to registers.

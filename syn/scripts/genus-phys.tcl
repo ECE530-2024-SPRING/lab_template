@@ -70,6 +70,7 @@ read_def ../../apr/outputs/${top_design}.floorplan.innovus.def
 
 set_db auto_ungroup none
 
+set_db design:$top_design .dft_scan_map_mode force_all
 
 syn_generic -physical
 
