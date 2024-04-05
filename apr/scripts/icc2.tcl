@@ -92,10 +92,13 @@ if { [regexp -nocase "p" $flow ] } {
     puts "######## STARTING PLACE #################"
 
     if { [ info exists fc_rtl ] && $fc_rtl } {
+
+       set_max_transition 0.5 [current_design ]
        # compile_fusion 
        # Do we need this? set_app_option -name seqmap.bind_scan_pins -value true 
        # To get the list of steps: compile_fusion -list_only 
-       compile_fusion -to initial_opto 
+       # initial_map logic_opto initial_place initial_drc initial_opto final_place final_opto
+       compile_fusion -to logic_opto 
        puts "######## FINISHED COMPILE_FUSION -TO INITIAL_OPTO #################"
        # insert_dft
        if { [file exists ../scripts/${top_design}_fc_test.tcl ] } { 
@@ -103,7 +106,8 @@ if { [regexp -nocase "p" $flow ] } {
            source ../scripts/${top_design}_fc_test.tcl 
        }
        puts "######## STARTING COMPILE_FUSION -FROM FINAL_PLACE #################"
-       compile_fusion -from final_place
+       compile_fusion -from initial_place
+
     } else {
        place_opt  
     }

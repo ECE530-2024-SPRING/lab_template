@@ -57,7 +57,7 @@ if {[info exists synopsys_program_name]} {
         if { $synopsys_program_name == "dc_shell" } {
            set_host_options -max_cores 4
         } 
-        if { $synopsys_program_name == "icc2_shell" } {
+        if { ($synopsys_program_name == "icc2_shell") || ($synopsys_program_name == "fc_shell") } {
            set_host_options -max_cores 4
         }
 } elseif {[get_db root: .program_short_name] == "innovus"} {
