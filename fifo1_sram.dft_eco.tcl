@@ -11,7 +11,7 @@ connect wclk pll_wclk/REF_CLK -net_name wclk
 connect wclk2x pll_wclk2x/REF_CLK -net_name wclk2x
 connect rclk pll_rclk/REF_CLK -net_name rclk
 
-set wclk_pin [get_pins wdata_reg*/clk]
+set wclk_pin [get_pins wdata_reg*/CLK]
 
 foreach_in_collection i $wclk_pin {
    
