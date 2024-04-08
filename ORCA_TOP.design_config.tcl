@@ -33,7 +33,7 @@ set pad_design 0
 set design_size {1000 644 }
 set design_io_border 10
 set dc_floorplanning 1
-set enable_dft  1
+set enable_dft  0
 set innovus_enable_manual_macro_placement 1
 set split_constraints 0
 
@@ -52,7 +52,7 @@ set fast_metal Cmin.tlup_-40
 set lib_types "$lib_dir/stdcell_rvt/db_nldm $lib_dir/stdcell_lvt/db_nldm $lib_dir/stdcell_hvt/db_nldm $lib_dir/io_std/db_nldm $lib_dir/sram/db_nldm $lib_dir/pll/db_nldm"
 set ndm_types "$lib_dir/stdcell_rvt/ndm $lib_dir/stdcell_lvt/ndm $lib_dir/stdcell_hvt/ndm $lib_dir/sram/ndm $lib_dir/io_std/ndm  $lib_dir/pll/ndm"
 set lib_types_target "$lib_dir/stdcell_rvt/db_nldm"
-set sub_lib_type "saed32?vt_ saed32sram_ saed32io_wb_ saed32pll_"
+set sub_lib_type "saed32?vt_ saed32sram_ saed32io_wb_ saed32pll_ saed32?vt_ulvl_ saed32?vt_dlvl_"
 set sub_lib_type_target "saed32rvt_"
 set synth_corners_target "ss0p95vn40c ss0p75vn40c" 
 #set synth_corners_target "ss0p95v125c" 

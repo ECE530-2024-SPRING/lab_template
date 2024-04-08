@@ -4,7 +4,10 @@ if { [info exists synopsys_program_name ] } {
          "icc2_shell"  {
 		# If the flow variable is set, then we should be in regular APR flow and not the macro floorplanning mode
 		# We want to use the UPF associated with the correct netlist.  APR flow uses DCT output.  Macro fp uses DC output.
-		if { [info exists flow ] } {
+                if { [ info exists fc_rtl ] && $fc_rtl } {
+		    puts " Sourcing the RTL UPF"
+		    source ../../constraints/ORCA_TOP.upf
+                } elseif { [info exists flow ] } {
 		    puts " Sourcing the Physical Synthesis DCT UPF"
 		    source ../../syn/outputs/ORCA_TOP.dct.upf
 		} else {

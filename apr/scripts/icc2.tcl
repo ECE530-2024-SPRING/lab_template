@@ -93,15 +93,18 @@ if { [regexp -nocase "p" $flow ] } {
 
     if { [ info exists fc_rtl ] && $fc_rtl } {
 
+       set_app_option -name compile.flow.autoungroup -value false
        set_max_transition 0.5 [current_design ]
        # compile_fusion 
        # Do we need this? set_app_option -name seqmap.bind_scan_pins -value true 
        # To get the list of steps: compile_fusion -list_only 
        # initial_map logic_opto initial_place initial_drc initial_opto final_place final_opto
-       compile_fusion -to logic_opto 
+       compile_fusion -to logic_opto
+       save_block -as "logic_opto"
+
        puts "######## FINISHED COMPILE_FUSION -TO INITIAL_OPTO #################"
        # insert_dft
-       if { [file exists ../scripts/${top_design}_fc_test.tcl ] } { 
+       if { $enable_dft && [file exists ../scripts/${top_design}_fc_test.tcl ] } { 
            puts "######## INSERTING TEST #################"
            source ../scripts/${top_design}_fc_test.tcl 
        }
