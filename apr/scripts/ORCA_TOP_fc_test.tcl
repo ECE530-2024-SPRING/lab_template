@@ -94,13 +94,17 @@ set_scan_element false [get_cells I_CLOCKING/* -filter "is_sequential==true"  ]
 # And off the resets FFs
 foreach_in_collection i [ get_pins I_CLOCKING/*rst* -filter "direction==out" ] {
    set name [get_attribute $i name ]
-   create_cell I_CLOCKING/${name}_testctl saed32hvt_ss0p75vn40c/OR2X1_HVT
-   set driver [get_pin -leaf -of_obj [ get_net -of_obj  [get_pins $i ] ] -filter "direction == out" ]
-   set drv_net [get_net -of_obj $driver ]
-   disconnect_net $drv_net $driver
-   connect_net $drv_net I_CLOCKING/${name}_testctl/Y
-   connect_pin -driver test_mode   I_CLOCKING/${name}_testctl/A1 -port_name test_mode
-   connect_pin -driver $driver  I_CLOCKING/${name}_testctl/A2 
+   # PCI clock reset seems to be optimized out
+   if { $name != "pci_rst_n"} {
+       puts "Putting gating on $name "
+       create_cell I_CLOCKING/${name}_testctl saed32hvt_ss0p75vn40c/OR2X1_HVT
+       set driver [get_pin -leaf -of_obj [ get_net -of_obj  [get_pins $i ] ] -filter "direction == out" ]
+       set drv_net [get_net -of_obj $driver ]
+       disconnect_net $drv_net $driver
+       connect_net $drv_net I_CLOCKING/${name}_testctl/Y
+       connect_pin -driver test_mode   I_CLOCKING/${name}_testctl/A1 -port_name test_mode
+       connect_pin -driver $driver  I_CLOCKING/${name}_testctl/A2 
+   }
 }
 
 #Connect the SE pins of the clock gaters.  It isn't happening automatically.

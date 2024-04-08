@@ -95,6 +95,8 @@ if { [regexp -nocase "p" $flow ] } {
 
        set_app_option -name compile.flow.autoungroup -value false
        set_max_transition 0.5 [current_design ]
+       set_app_option -name compile.seqmap.remove_unloaded_registers -value false
+       set_app_option -name compile.seqmap.scan -value true
        # compile_fusion 
        # Do we need this? set_app_option -name seqmap.bind_scan_pins -value true 
        # To get the list of steps: compile_fusion -list_only 
