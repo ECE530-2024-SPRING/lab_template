@@ -1,7 +1,7 @@
 if { [info exists synopsys_program_name ] } {
     source -echo -verbose ../scripts/fix_macro_outputs_place.tcl
     echo READING SCANDEF
-    if { ! $fc_rtl } { 
+    if { ( ! [ info exists fc_rtl ] ) ||  ( ! $fc_rtl ) } {
         echo READING SCANDEF
         read_def ../../syn/outputs/ORCA_TOP.dct.scan.def
         echo FINISHED READING SCANDEF
