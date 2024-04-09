@@ -95,7 +95,7 @@ if { [regexp -nocase "p" $flow ] } {
 
        set_app_option -name compile.flow.autoungroup -value false
        set_max_transition 0.5 [current_design ]
-       set_app_option -name compile.seqmap.remove_unloaded_registers -value false
+       #set_app_option -name compile.seqmap.remove_unloaded_registers -value false
        set_app_option -name compile.seqmap.scan -value true
        set_app_option -name compile.flow.conservative_constant_propagation -value true
        set_app_option -name compile.flow.enable_high_effort_constant_propagation -value false
