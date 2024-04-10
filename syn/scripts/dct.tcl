@@ -10,6 +10,8 @@ if { $this_design != 0 } {
   remove_design -designs
 }
 
+exec rm -rf ${top_design}.mw
+
 source ../scripts/dc-get-timlibs.tcl
 
 source ../scripts/dct-getcreate-mwlib.tcl
