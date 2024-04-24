@@ -124,8 +124,8 @@ if {[info exists synopsys_program_name]} {
            set_host_options -max_cores 4
         }
 } elseif {[get_db root: .program_short_name] == "innovus"} {
-        if [is_common_ui_mode ] {set_multi_cpu_usage -local_cpu 8  
-        } else { setMultiCpuUsage -localCpu 8 }
+        if [is_common_ui_mode ] {set_multi_cpu_usage -local_cpu 4  
+        } else { setMultiCpuUsage -localCpu 4 }
 } elseif {[get_db root: .program_short_name] == "genus"} {
-  set_db / .max_cpus_per_server 8 
+  set_db / .max_cpus_per_server 4 
 }
