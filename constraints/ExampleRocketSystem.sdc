@@ -32,7 +32,7 @@ set_input_delay 0.0016 [all_inputs] -clock clock
 set_output_delay 0.0016 [all_outputs] -clock clock
 set_driving_cell -lib_cell NBUFFX8_HVT [all_inputs]
 set_load 0.009 [all_outputs]
-set_clock_uncertainty -hold 0.001 [get_clocks clock]
+set_clock_uncertainty -hold 0.05 [get_clocks clock]
 # clock skew of around 100ps
 set_clock_uncertainty -setup 0.160 [get_clocks clock]
 
