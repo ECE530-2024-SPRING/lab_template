@@ -27,6 +27,10 @@ read_design [join [list $libs ../../apr/outputs/$env(TOP).route2.vg.gz ] ] -veri
 # set FFs that are internal test mode FFs if they exist
 # add_inst_constraint <value> <instance_name> -both
 
+# add renaming to help RTL to Gates where there are brackets in rtl but update_names changed it to _
+# replace [a-Z0-9_] with _@1
+# add_renaming_rule bracket_fix {\[%w\]} {_@1} -type DFF -replace
+
 set_system mode lec
 add_compared_points -all
 compare
