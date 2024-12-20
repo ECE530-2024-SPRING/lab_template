@@ -8,6 +8,9 @@
 #
 # optonal for running only certain stages of the flow: set flow "fpcr"
 # f = floorplan, p = place, c = clock_opt, r = route + reports
+# fc_rtl = 1 for fusioncompiler with RTL
+# nofp = 1 for no floorplan use with fusioncompiler
+# if you just want synthesis, do set flow fp
 ####################################################
 
 #####################################################
@@ -67,8 +70,8 @@ if { [regexp -nocase "f" $flow ] } {
     if { [file exists ../scripts/${top_design}.pre.floorplan.tcl ] } { source -echo -verbose ../scripts/${top_design}.pre.floorplan.tcl }
 
     
-	source -echo -verbose ../scripts/floorplan2.tcl
-    read_def ../outputs/${top_design}.floorplan.macros.def
+    if { [info exists nofp] && ! $nofp } { source -echo -verbose ../scripts/floorplan2.tcl }
+    if { [file exists ../outputs/${top_design}.floorplan.macros.def ] } {read_def ../outputs/${top_design}.floorplan.macros.def }
 
     if { [file exists ../scripts/${top_design}.post.floorplan.tcl ] } { source -echo -verbose ../scripts/${top_design}.post.floorplan.tcl }
 
