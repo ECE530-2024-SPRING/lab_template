@@ -23,7 +23,7 @@ create_lib $my_lib -ref_libs $libs  -use_technology_lib [lindex $libs 0 ]
 #	-top $top_design
 
 if { [ info exists fc_rtl ] && $fc_rtl } {
-    analyze $rtl_list  -define SYNTHESIS -format sverilog
+    analyze $rtl_list  -define SYNTHESIS -autoread
     elaborate ${top_design} 
     set_top_module $top_design  
     uniquify
