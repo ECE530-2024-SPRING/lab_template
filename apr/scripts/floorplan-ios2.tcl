@@ -1,5 +1,5 @@
 
-if { [ sizeof_coll [ get_cell -quiet io_* ] ] == 0 } {
+if { [ sizeof_coll [ get_cell -quiet { io_* *_iopad* } ] ] == 0 } {
  source -echo -verbose ../scripts/add_ios.tcl
 }
 # Move this outside the if statement, and make it configurable through a variable?

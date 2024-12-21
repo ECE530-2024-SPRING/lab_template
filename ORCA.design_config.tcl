@@ -29,16 +29,16 @@ set hack_lef_dir /u/bcruik2/hacked_lefs
 set top_design ORCA
 set FCL 0
 set add_ios 0
-set pad_design 0
-set design_size {1000 644 }
-set design_io_border 10
+set pad_design 1
+set design_size {2000 2000 }
+set design_io_border 310
 set dc_floorplanning 1
 set enable_dft 0 
 set innovus_enable_manual_macro_placement 0
 set split_constraints 0
 
 # This is the raw RTL without SRAMS
-set rtl_list [list  [glob ../../orca/dc/rtl/*.vhd ] ../../syn/rtl/MUX21X2.sv ]
+set rtl_list [list  [glob ~bcruik2/ORCA_RTL_PATCHED/*.vhd ] ../../syn/rtl/MUX21X2.sv ]
 # This is hacked P&R netlist with SRAMs and test and level shifters removed.
 #set rtl_list [list ../../syn/rtl/$top_design.sv ]
 

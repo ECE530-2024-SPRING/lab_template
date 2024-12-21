@@ -82,6 +82,7 @@ set_app_options -name plan.macro.buffer_channel_width -value 0u
 #
 source -echo -verbose ../../${top_design}.design_options.tcl
 
+remove_cell [ get_cell -hier -filter "is_mapped==false&&is_hierarchical==false" ]
 if { [file exists ../outputs/${top_design}.floorplan.macros.def] && $FCL==0} {
 	
 	# If def file exists, read def and add manual changes to the floorplan.
