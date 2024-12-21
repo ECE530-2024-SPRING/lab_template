@@ -38,7 +38,7 @@ set innovus_enable_manual_macro_placement 0
 set split_constraints 0
 
 # This is the raw RTL without SRAMS
-set rtl_list [list  [glob ~bcruik2/ORCA_RTL_PATCHED/*.vhd ] ../../syn/rtl/MUX21X2.sv ]
+set rtl_list [list  [glob ../../orca/dc/rtl/*.vhd ] ../../syn/rtl/MUX21X2.sv ]
 # This is hacked P&R netlist with SRAMs and test and level shifters removed.
 #set rtl_list [list ../../syn/rtl/$top_design.sv ]
 
@@ -50,7 +50,7 @@ set slow_metal Cmax.tlup_-40
 set fast_metal Cmin.tlup_-40
 
 set lib_types "$lib_dir/stdcell_rvt/db_nldm $lib_dir/stdcell_lvt/db_nldm $lib_dir/stdcell_hvt/db_nldm $lib_dir/io_std/db_nldm $lib_dir/sram/db_nldm $lib_dir/pll/db_nldm"
-set ndm_types "$lib_dir/stdcell_rvt/ndm $lib_dir/stdcell_lvt/ndm $lib_dir/stdcell_hvt/ndm $lib_dir/sram/ndm $lib_dir/io_std/ndm  ~/"
+set ndm_types "$lib_dir/stdcell_rvt/ndm $lib_dir/stdcell_lvt/ndm $lib_dir/stdcell_hvt/ndm $lib_dir/sram/ndm $lib_dir/io_std/ndm  ~bcruik2/"
 set lib_types_target "$lib_dir/stdcell_rvt/db_nldm"
 set sub_lib_type "saed32?vt_ saed32sram_ saed32io_wb_ saed32pll_ saed32?vt_ulvl_ saed32?vt_dlvl_ "
 set sub_lib_type_target "saed32rvt_"
