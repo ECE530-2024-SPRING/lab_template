@@ -38,7 +38,7 @@ set innovus_enable_manual_macro_placement 0
 set split_constraints 0
 
 # This is the raw RTL without SRAMS
-set rtl_list [list  [glob ../../orca/dc/rtl/*.vhd ] ../../syn/rtl/MUX21X2.sv ]
+set rtl_list [list  [glob /u/bcruik2/ORCA_RTL_PATCHED/*.vhd ] ../../syn/rtl/MUX21X2.sv ]
 # This is hacked P&R netlist with SRAMs and test and level shifters removed.
 #set rtl_list [list ../../syn/rtl/$top_design.sv ]
 
