@@ -85,7 +85,7 @@ if { [info exists enable_dft] &&  $enable_dft  } {
 
    check_dft_rules
    # Need to have test_mode port defined to run this command. 
-   fix_dft_violations -clock -async_set -async_reset -test_control test_mode  
+   #fix_dft_violations -clock -async_set -async_reset -test_control test_mode  
    report dft_registers
 
 }
