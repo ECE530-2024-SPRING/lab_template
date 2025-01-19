@@ -61,6 +61,7 @@ check_design > ../reports/${top_design}.$stage.check_design.rpt
 check_mv_design  > ../reports/${top_design}.$stage.mvrc.rpt
 
 write -hier -format verilog -output ../outputs/${top_design}.$stage.vg
+write -hier -format verilog -pg -output ../outputs/${top_design}.$stage.pg.vg
 write -hier -format ddc -output ../outputs/${top_design}.$stage.ddc
 write_def -blockages -macro -pins -output ../outputs/${top_design}.$stage.def
 save_upf ../outputs/${top_design}.$stage.upf
