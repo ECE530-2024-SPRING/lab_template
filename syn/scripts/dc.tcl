@@ -58,6 +58,7 @@ check_mv_design  > ../reports/${top_design}.$stage.mvrc.rpt
 
 # output netlist
 write -hier -format verilog -output ../outputs/${top_design}.$stage.vg
+write -hier -format verilog -pg -output ../outputs/${top_design}.$stage.pg.vg
 write -hier -format ddc -output ../outputs/${top_design}.$stage.ddc
 save_upf ../outputs/${top_design}.$stage.upf
 

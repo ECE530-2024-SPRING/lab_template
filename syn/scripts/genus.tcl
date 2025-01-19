@@ -115,6 +115,7 @@ check_design  > ../reports/${top_design}.$stage.check_design.rpt
 
 # output netlist
 write_hdl $top_design > ../outputs/${top_design}.$stage.vg
+write_hdl $top_design -pg > ../outputs/${top_design}.$stage.pg.vg
 if { [info exists enable_dft] &&  $enable_dft  } {
    # output scan def. 
    write_scandef $top_design > ../outputs/${top_design}.$stage.scan.def
