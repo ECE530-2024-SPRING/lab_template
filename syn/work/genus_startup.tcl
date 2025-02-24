@@ -4,6 +4,9 @@ alias f "set top_design fifo1"
 alias O "set top_design ORCA"
 alias o "set top_design ORCA_TOP"
 alias e "set top_design ExampleRocketSystem"
+alias bs "set top_design bit_slice"
+alias bt "set top_design bit_top"
+alias bc "set top_design bit_coin"
 set_db timing_report_fields "delay arrival cell flags timing_point"
 history keep 100
 set systemTime [clock seconds]

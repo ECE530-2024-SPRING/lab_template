@@ -35,9 +35,13 @@ set sh_enable_page_mode false
 
 alias _ measure_time
 
+alias O {puts "setting top_design to: " ; set top_design ORCA}
 alias o {puts "setting top_design to: " ; set top_design ORCA_TOP}
 alias e {puts "setting top_design to: " ; set top_design ExampleRocketSystem}
 alias f {puts "setting top_design to: " ; set top_design fifo1}
 alias s {puts "setting top_design to: " ; set top_design simple_and }
 alias fs {puts "setting top_design to: " ; set top_design fifo1_sram}
+alias bs {puts "setting top_design to: " ; set top_design bit_slice }
+alias bt {puts "setting top_design to: " ; set top_design bit_top }
+alias bc {puts "setting top_design to: " ; set top_design bit_coin }
 

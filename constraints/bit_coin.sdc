@@ -41,14 +41,14 @@ set_false_path -to [list sipo_scan_out piso_scan_out hv_scan_out lv_scan_out]
 # MULTICYCLE PATH
 set_multicycle_path -hold -setup 4 -from secure_data_in* -to secure_data_out*
 set_multicycle_path -hold -setup 4 -from isolation_signal* -to data_ready
-set_multicycle_path -hold -setup -to [get_pins *SI* -hier] 4
+#set_multicycle_path -hold -setup -to [get_pins *SI* -hier] 4
 set_multicycle_path -hold -setup -from isolation_signals* 20
-set_multicycle_path -hold -setup -from bit_secure_*/slice_*/sipo_bit/wr_tmp_reg/CLK -to  bit_secure_*/slice_*/sipo_bit/wr_0_reg/D 4
+set_multicycle_path -hold -setup -from [get_pins bit_secure_*/slice_*/sipo_bit/wr_tmp_reg/* -filter "is_clock_pin==true" ] -to  [get_pins bit_secure_*/slice_*/sipo_bit/wr_0_reg/* -filter "is_data_pin==true" ] 4
 set_multicycle_path -hold -setup -through *sync* 4
 set_multicycle_path -hold -setup -from [list secure_data_in hash_key reset data_valid isolation_signals[1] isolation_signals[0] retention_signals[1] retention_signals[0] scan_enable sipo_scan_in piso_scan_in hv_scan_in lv_scan_in] 20
 set_multicycle_path -hold -setup -to */*/*nibble*/* 4
 set_multicycle_path -hold -setup -to [all_outputs ] 2
-set_multicycle_path -hold -setup -to [get_pins *SI* -hier] 5
+#set_multicycle_path -hold -setup -to [get_pins *SI* -hier] 5
 set_multicycle_path -hold -setup -from */slice*/piso*/dout* 2
 set_multicycle_path -hold -setup -from */slice*/sipo*/wr*/* 3
 set_multicycle_path -hold -setup -to */*slice_f*/temp*/* 2

@@ -33,7 +33,7 @@ set_output_delay 0.1 -clock hclk [all_outputs ]
 # FALSE PATH
 set_false_path -setup -to *scan_o*
 set_false_path -setup -from *scan_i*
-set_false_path -to [get_pins *SI* -hier]
+#set_false_path -to [get_pins *SI* -hier]
 set_false_path -from [list scan_enable sipo_scan_in piso_scan_in hv_scan_in lv_scan_in]
 set_false_path -to [list sipo_scan_out piso_scan_out hv_scan_out lv_scan_out]
 set_false_path -from [list scan_enable sipo_scan_in piso_scan_in hv_scan_in lv_scan_in]
@@ -42,11 +42,11 @@ set_false_path -to [list sipo_scan_out piso_scan_out hv_scan_out lv_scan_out]
 # MULTICYCLE PATH
 set_multicycle_path -hold -setup -to sout* 2
 set_multicycle_path -hold -setup -through */*nibble*/* 4
-set_multicycle_path -hold -setup -to [get_pins *SI* -hier] 4
+#set_multicycle_path -hold -setup -to [get_pins *SI* -hier] 4
 set_multicycle_path -hold -setup -from isolation_signals* 20
 set_multicycle_path -hold -setup -to slice*/sipo*/count*/* 2
-set_multicycle_path -hold -setup -from slice*/sync*/*sync*/* 3
-set_multicycle_path -hold -setup -to slice*/sync*/*sync*/* 3
+#set_multicycle_path -hold -setup -from slice*/sync*/*sync*/* 3
+#set_multicycle_path -hold -setup -to slice*/sync*/*sync*/* 3
 set_multicycle_path -hold -setup -from slice*/load*/* 2
 set_multicycle_path -hold -setup -from slice*/piso*/temp* 2
 set_multicycle_path -hold -setup -from sipo*/pout* 2
