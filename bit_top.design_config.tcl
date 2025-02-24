@@ -1,4 +1,5 @@
 set lib_dir /pkgs/synopsys/2020/32_28nm/SAED32_EDK/lib
+#set lib_dir /pkgs/synopsys/2020/bitcoin/bitcoin_v1.1_lib/lib/
 set hack_lef_dir /u/bcruik2/hacked_lefs
 
 # Decoder ring for the libraries
@@ -26,40 +27,18 @@ set hack_lef_dir /u/bcruik2/hacked_lefs
 # The one pulled from a lab does have macros, but no RTL.  Similar to the version with RTL.
 # Below is an effort to get the design pulled from a lap working for ICC2
 # Original lab had sram_lp memories, but the NDMs don't seem to be build correctly for the current libraries.  Converted code to regular SRAMs.
-set top_design ORCA
 set FCL 0
 set add_ios 0
-set pad_design 1
-set design_size {2000 2000 }
-set design_io_border 310
+set pad_design 0
+set design_size {1000 644 }
+set design_io_border 10
 set dc_floorplanning 1
-set enable_dft 0 
+set enable_dft  0 
 set innovus_enable_manual_macro_placement 0
 set split_constraints 0
 
 # This is the raw RTL without SRAMS
-#set rtl_list [list  /u/bcruik2/ORCA_RTL_PATCHED2/ORCA_TYPES.vhd /u/bcruik2/ORCA_RTL_PATCHED2/RISCTYPES.vhd [glob /u/bcruik2/ORCA_RTL_PATCHED2/*.vhd ] ../../syn/rtl/MUX21X2.sv ]
-#set rtl_list [ list ../../syn/rtl/MUX21X2.sv /u/bcruik2/ORCA_RTL_PATCHED2/ORCA_TYPES.vhd /u/bcruik2/ORCA_RTL_PATCHED2/RISCTYPES.vhd 
-set rtl_list "/u/bcruik2/ORCA_RTL_PATCHED2/ORCA_TYPES.vhd /u/bcruik2/ORCA_RTL_PATCHED2/RISCTYPES.vhd 
-/u/bcruik2/ORCA_RTL_PATCHED2/CONTROL.vhd /u/bcruik2/ORCA_RTL_PATCHED2/ALU.vhd 
-/u/bcruik2/ORCA_RTL_PATCHED2/STACK_FSM.vhd /u/bcruik2/ORCA_RTL_PATCHED2/DATA_PATH.vhd  /u/bcruik2/ORCA_RTL_PATCHED2/PRGRM_DECODE.vhd /u/bcruik2/ORCA_RTL_PATCHED2/PCI_CORE.vhd 
-/u/bcruik2/ORCA_RTL_PATCHED2/SD_W_MUX.vhd /u/bcruik2/ORCA_RTL_PATCHED2/BLENDER.vhd 
-/u/bcruik2/ORCA_RTL_PATCHED2/SDRAM_FIFO.vhd /u/bcruik2/ORCA_RTL_PATCHED2/PCI_TOP.vhd 
-/u/bcruik2/ORCA_RTL_PATCHED2/PRGRM_CNT_TOP.vhd /u/bcruik2/ORCA_RTL_PATCHED2/STACK_MEM.vhd 
-/u/bcruik2/ORCA_RTL_PATCHED2/REG_FILE.vhd /u/bcruik2/ORCA_RTL_PATCHED2/RISC_CORE.vhd 
-/u/bcruik2/ORCA_RTL_PATCHED2/RISC_CHIP.vhd 
-/u/bcruik2/ORCA_RTL_PATCHED2/CLOCK_GEN.vhd /u/bcruik2/ORCA_RTL_PATCHED2/SDRAM_IF.vhd 
-/u/bcruik2/ORCA_RTL_PATCHED2/PCI_FIFO.vhd /u/bcruik2/ORCA_RTL_PATCHED2/PRGRM_CNT.vhd 
-/u/bcruik2/ORCA_RTL_PATCHED2/CONTEXT_MEM.vhd /u/bcruik2/ORCA_RTL_PATCHED2/PRGRM_FSM.vhd 
-/u/bcruik2/ORCA_RTL_PATCHED2/PARSER.vhd /u/bcruik2/ORCA_RTL_PATCHED2/STACK_TOP.vhd 
-/u/bcruik2/ORCA_RTL_PATCHED2/RESET_BLOCK.vhd 
-/u/bcruik2/ORCA_RTL_PATCHED2/PCI_W_MUX.vhd /u/bcruik2/ORCA_RTL_PATCHED2/INSTRN_LAT.vhd 
-/u/bcruik2/ORCA_RTL_PATCHED2/SDRAM_TOP.vhd 
-/u/bcruik2/ORCA_RTL_PATCHED2/ORCA_TOP.vhd 
-/u/bcruik2/ORCA_RTL_PATCHED2/ORCA.vhd 
-../../syn/rtl/MUX21X2.sv"
-
-
+set rtl_list [list  [glob /pkgs/synopsys/2020/bitcoin/bitcoin_v1.1/rtl/*.v ] ]
 # This is hacked P&R netlist with SRAMs and test and level shifters removed.
 #set rtl_list [list ../../syn/rtl/$top_design.sv ]
 
@@ -70,10 +49,10 @@ set synth_corners_fast $fast_corner
 set slow_metal Cmax.tlup_-40
 set fast_metal Cmin.tlup_-40
 
-set lib_types "$lib_dir/stdcell_rvt/db_nldm $lib_dir/stdcell_lvt/db_nldm $lib_dir/stdcell_hvt/db_nldm $lib_dir/io_std/db_nldm $lib_dir/sram/db_nldm $lib_dir/pll/db_nldm"
-set ndm_types "$lib_dir/stdcell_rvt/ndm $lib_dir/stdcell_lvt/ndm $lib_dir/stdcell_hvt/ndm $lib_dir/sram/ndm $lib_dir/io_std/ndm  ~bcruik2/"
+set lib_types "$lib_dir/stdcell_rvt/db_nldm $lib_dir/stdcell_lvt/db_nldm $lib_dir/stdcell_hvt/db_nldm $lib_dir/io_std/db_nldm $lib_dir/sram_lp/db_nldm $lib_dir/pll/db_nldm"
+set ndm_types "$lib_dir/stdcell_rvt/ndm $lib_dir/stdcell_lvt/ndm $lib_dir/stdcell_hvt/ndm $lib_dir/sram_lp/ndm $lib_dir/io_std/ndm  $lib_dir/pll/ndm"
 set lib_types_target "$lib_dir/stdcell_rvt/db_nldm"
-set sub_lib_type "saed32?vt_ saed32sram_ saed32io_wb_ saed32pll_ saed32?vt_ulvl_ saed32?vt_dlvl_ "
+set sub_lib_type "saed32?vt_ saed32sramlp_ saed32io_wb_ saed32pll_ saed32?vt_ulvl_ saed32?vt_dlvl_"
 set sub_lib_type_target "saed32rvt_"
 set synth_corners_target "ss0p95vn40c ss0p75vn40c" 
 #set synth_corners_target "ss0p95v125c" 
@@ -81,11 +60,11 @@ set tech_lef ${hack_lef_dir}/tech.lef
 # set tech_lef ../../cadence_cap_tech/tech.lef
 
 set lef_types [list $hack_lef_dir  \
-$lib_dir/sram/lef/ \
+$lib_dir/sram_lp/lef/ \
 $lib_dir/io_std/lef \
 $lib_dir/pll/lef \
 ]
-#set lef_types [list $lib_dir/stdcell_hvt/lef  $lib_dir/stdcell_rvt/lef $lib_dir/stdcell_lvt/lef $lib_dir/sram/lef $lib_dir/io_std/lef $lib_dir/pll/lef ]
+#set lef_types [list $lib_dir/stdcell_hvt/lef  $lib_dir/stdcell_rvt/lef $lib_dir/stdcell_lvt/lef $lib_dir/sram_lp/lef $lib_dir/io_std/lef $lib_dir/pll/lef ]
 
 set sub_lef_type "saed32nm_?vt_*.lef saed32sram.lef saed32io_std_wb saed32_PLL.lef"
 
@@ -96,7 +75,7 @@ set mwlib_types [list $lib_dir/stdcell_hvt/milkyway \
 $lib_dir/stdcell_rvt/milkyway \
 $lib_dir/stdcell_lvt/milkyway  \
 $lib_dir/io_std/milkyway \
-$lib_dir/sram/milkyway $lib_dir/pll/milkyway \
+$lib_dir/sram_lp/milkyway $lib_dir/pll/milkyway \
  ]
 set sub_mwlib_type "saed32nm_?vt_* SRAM32NM saed32io_wb_* SAED32_PLL_FR*"
 
@@ -113,9 +92,9 @@ if { 0 } {
     set corners "$corners ff0p95vn40c ff0p95vn40c_i1p16v ff0p95vn40c_i0p95v ff1p16vn40c ff1p16vn40c_i1p16v ff1p16vn40c_i0p95v"
     #Add Leakage corners
     set corners "$corners ff0p95v125c f0p95v125c_i1p16v ff0p95v125c_i0p95v ff1p16v125c ff1p16v125c_i1p16v ff1p16v125c ff1p16v125c_i0p95v"
-    set lib_types "stdcell_hvt stdcell_rvt stdcell_lvt sram_lp"
+    set lib_types "stdcell_hvt stdcell_rvt stdcell_lvt sramlp"
     # Get the main standard cells, and also the level shifters.  Plus srams.
-    set sub_lib_type "saed32?vt_ saed32?vt_ulvl_ saed32?vt_dlvl_ saed32sram_"
+    set sub_lib_type "saed32?vt_ saed32?vt_ulvl_ saed32?vt_dlvl_ saed32sramlp_"
 }
 
 #set topdir /u/$env(USER)/PSU_RTL2GDS

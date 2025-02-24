@@ -20,7 +20,18 @@ set_db auto_ungroup none
 #set_db lp_insert_clock_gating true
 
 # Analyzing the current FIFO design
-read_hdl -language sv ../rtl/${top_design}.sv
+#read_hdl -language vhdl $rtl_list
+
+set rtl_list2 [join $rtl_list ]
+set vhdl_list ""
+set match [lsearch $rtl_list2 *.vhd ]
+while { $match != -1 } {
+  set vhdl_list "$vhdl_list [lindex $rtl_list2 $match ]"
+  set rtl_list2 [lminus $rtl_list2 [lindex $rtl_list2 $match ] ]
+  set match [lsearch $rtl_list2 *.vhd ]
+}
+if { $rtl_list2 != "" } { read_hdl -language sv $rtl_list2 }
+if { $vhdl_list != "" } { read_hdl -language vhdl $vhdl_list }
 
 #set_db hdl_array_naming_style %s_%d
 #set_db hdl_instance_array_naming_style %s_%d
@@ -115,7 +126,6 @@ check_design  > ../reports/${top_design}.$stage.check_design.rpt
 
 # output netlist
 write_hdl $top_design > ../outputs/${top_design}.$stage.vg
-write_hdl $top_design -pg > ../outputs/${top_design}.$stage.pg.vg
 if { [info exists enable_dft] &&  $enable_dft  } {
    # output scan def. 
    write_scandef $top_design > ../outputs/${top_design}.$stage.scan.def

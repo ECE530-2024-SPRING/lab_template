@@ -1,6 +1,7 @@
 alias s "set top_design simple_and"
 alias fs "set top_design fifo1_sram"
 alias f "set top_design fifo1"
+alias O "set top_design ORCA"
 alias o "set top_design ORCA_TOP"
 alias e "set top_design ExampleRocketSystem"
 set_db timing_report_fields "delay arrival cell flags timing_point"

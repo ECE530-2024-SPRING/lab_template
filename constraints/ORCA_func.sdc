@@ -175,8 +175,8 @@ set_load 20 $sd_ports
 set_load 5 [get_ports "sd_CK sd_CKn"]
 
 # Setup gating checks for DDR interface
-set all_I0_mux_pins [get_pins I_ORCA_TOP/I_SDRAM_TOP/I_SDRAM_IF/sd_mux_dq_out_*/A1]
-set all_I1_mux_pins [get_pins I_ORCA_TOP/I_SDRAM_TOP/I_SDRAM_IF/sd_mux_dq_out_*/A2]
+set all_I0_mux_pins [get_pins I_ORCA_TOP/I_SDRAM_TOP/I_SDRAM_IF/sd_mux_*/A1]
+set all_I1_mux_pins [get_pins I_ORCA_TOP/I_SDRAM_TOP/I_SDRAM_IF/sd_mux_*/A2]
 set_clock_gating_check -low -setup 0 -hold 0 $all_I0_mux_pins
 set_clock_gating_check -high -setup 0 -hold 0 $all_I1_mux_pins
 
@@ -199,14 +199,14 @@ set_load 10 $mode_ports
 # set_load 10 $TAP_ports
 
 # Set scan configuration
-set_scan_configuration -style multiplexed_flip_flop
+#set_scan_configuration -style multiplexed_flip_flop
 
 # Wire load models:
 #  set_wire_load_mode top
 #  set_wire_load_model -name 40KGATES
 
 #set_operating_conditions $max_opcon
-set_operating_condition ss0p75v125c -library saed32lvt_ss0p75v125c
+#set_operating_condition ss0p75v125c -library saed32lvt_ss0p75v125c
 
 # The IO2 ports are only used  as OUTPUTs, therefore the input paths are false paths! (BIDI ports!)
 # set_false_path -to I_ORCA_TOP/I_RISC_CORE/I_REG_FILE/REG_FILE_A_RAM/IO2[*]
