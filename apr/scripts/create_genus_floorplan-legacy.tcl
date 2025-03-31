@@ -25,5 +25,5 @@ init_design
 
 source -echo -verbose ../../${top_design}.design_options.tcl
 
-source -echo -verbose ../scripts/floorplan-innovus.tcl
+source -echo -verbose ../scripts/floorplan-innovus-legacy.tcl
 
