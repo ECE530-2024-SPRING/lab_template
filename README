@@ -13,18 +13,18 @@ exit
 
 # Run P&R to generate a starting Floorplan with IOs for use in Synth.  Also a spot to move macros around and save results.
 cd ../../apr/work
-icc2_shell  (or innovus)
+icc2_shell  (or innovus -stylus)
 # Indicate to set the top design to fifo1.  There is an alias defined in .synopsys_dc.setup and enc.tcl
 fs
-source ../scripts/floorplan-macros2.tcl  (or ../scripts/floorplan-macros-innovus.tcl)
+source ../scripts/floorplan-macros2.tcl  (or ../scripts/floorplan-macros-innovus-cui.tcl)
 exit
 
 # Run P&R to generate a floorplan for Synth
 cd ../../apr/work
-icc2_shell  (or (innovus)
+icc2_shell  (or (innovus -stylus)
 # Indicate to set the top design to fifo1.  There is an alias defined in .synopsys_dc.setup and enc.tcl
 fs
-source ../scripts/create_dct_floorplan2.tcl  (or ../scripts/create_genus_floorplan.tcl)
+source ../scripts/create_dct_floorplan2.tcl  (or ../scripts/create_genus_floorplan-cui.tcl)
 exit
 
 # Rerun synthesis with Physically aware synth
@@ -38,19 +38,20 @@ exit
 
 # Rerun ICC and start with the physical synth netlist and proceed through full P&R flow
 cd ../../apr/work
-icc2_shell  (or innovus)
+icc2_shell  (or innovus -stylus)
 # Indicate to set the top design to fifo1.  There is an alias defined in .synopsys_dc.setup and enc.tcl
 fs
 # If you only want to run part of the flow, you can set flow "fpcr"  where f=floorplan, p=place, c=clock, r=route.
-source ../scripts/icc2.tcl  (or ../scripts/innovus.tcl)
+source ../scripts/icc2.tcl  (or ../scripts/innovus-cui.tcl)
 # If you rerun flow, either close_lib, then rerun, or exit the icc2_shell and reenter.  (or just source ../scripts/innovus.tcl?)
 exit
 
 #Fusion Compiler option
 # instead of running icc2_shell, you can run fc_shell.  Still use the icc2.tcl and other icc2 script names.
 #Innovus Sylus/Common-UI mode
-# instead of running innovus, runn innovus -stylus.  Then source commands similar to above, but with -cui suffix.
+# instead of running innovus, run innovus -stylus.  Then source commands similar to above, but with -cui suffix.
 # like innovus-cui.tcl or floorplan-macros-innovus-cui.tcl
+# legacy innovus is run by starting innovus without -stylus option.  Then source the scripts with -legacy suffix.
 
 # Check results in Primetime Static Timing Analysis in 3 modes
 # Follow directions at pt/scripts/README.DMSA.SSH 
