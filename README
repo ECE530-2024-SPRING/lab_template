@@ -3,7 +3,7 @@
   export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/pkgs/cadence/2019-03/SSV171/tools.lnx86/lib/64bit/"
 
 # Run Synthesis to generate a starting netlist non-physical synthesis.
-cd ~/PSU_RTL2GDS/syn/work
+cd syn/work
 dc_shell   (or genus)
 # Indicate to set the top design to fifo1.  There is an alias defined in .synopsys_dc.setup and genus_startup.tcl
 fs
@@ -27,7 +27,9 @@ fs
 source ../scripts/create_dct_floorplan2.tcl  (or ../scripts/create_genus_floorplan-cui.tcl)
 exit
 
-# Rerun synthesis with Physically aware synth
+# Rerun synthesis with Physically aware synth.  
+# This physical synth can be bypassed if using FusionCompiler if desired; other parts still must be done.
+# Logical synth is still needed for FusionCompiler usage in order to set up the floorplan.
 cd ../../syn/work
 dc_shell -topo  (or genus)
 # Indicate to set the top design to fifo1.  There is an alias defined in .synopsys_dc.setup and genus_startup.tcl
@@ -42,6 +44,7 @@ icc2_shell  (or innovus -stylus)
 # Indicate to set the top design to fifo1.  There is an alias defined in .synopsys_dc.setup and enc.tcl
 fs
 # If you only want to run part of the flow, you can set flow "fpcr"  where f=floorplan, p=place, c=clock, r=route.
+# If using FusionCompiler fc_shell and wanting to read RTL and bypassing physical synth, do this command: set fc_rtl 1
 source ../scripts/icc2.tcl  (or ../scripts/innovus-cui.tcl)
 # If you rerun flow, either close_lib, then rerun, or exit the icc2_shell and reenter.  (or just source ../scripts/innovus.tcl?)
 exit
