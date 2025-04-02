@@ -86,6 +86,44 @@ you can type "o" for ORCA_TOP.
     I have only run dc_shell with RTL.  Otherwise, I have always run ICC2.
 That will change the design_top variable through an alias set up in .synopsys*.setup in your current work directory.
 
-Only fifo1_sram is tested in Genus/Innovus currently.
-    Power grid on M1/M2 could be improved in Innovus to improve routing.
-    
+##########################################################    
+Directory structure:
+apr/         for place and route: Icc2, Innovus, FusionCompiler
+syn/         for synthesis: dc_shell, genus
+pt/          for primetime sta
+lec/         for logic equivalency with Conformal
+sim/         for verilog simulations
+syn/rtl      has the RTL
+constraints  timing constraints for syn/apr/pt
+cadence_cap_tech has Cadence physical technology/parasitic information
+
+Each run area has:
+work/        For running the tool.  Logfiles end up here.  Startup tcl file is here.
+             Databases are sometimes saved here
+reports/     For reports
+scripts/     For the tool scripts
+outputs/    Most outputs
+
+##########################################################    
+General configuring flow
+<design_name>.design_config.tcl   Configures all tools, libraries, voltages, etc.
+<design_name>.design_options.tcl  Configures some specific APR related options
+<design_name>.add_ios.tcl         Configures the potential adding of IO pads to the design
+<design_name>.pre/post.floorplan/place/cts/opt/route.tcl   Different TCL files that optionally run before/after a stage.
+
+
+DFT options for synthesis
+##########################################################
+Fusion Compiler enable_dft 1 inside <design_name>.design_config.tcl 
+       apr/scripts/<design_name>_fc_test.tcl
+Genus: enable_dft 1 inside <design_name>.design_config.tcl
+       <design_name>.dft_eco.tcl
+       <design_name>.dft_config.tcl
+       <design_name>.reg_eco.tcl
+dc_shell: Nothing in flow yet.  source a script after synth like:
+       syn/scripts/ORCA_TOP.test_basic.tcl
+       syn/scripts/ORCA_TOP.test_occ.tcl
+
+Fusion Compiler with no floorplan
+##########################################################
+nofp 1 inside of<design_name>.design_config.tcl
