@@ -119,7 +119,7 @@ syn_opt
 set stage genus
 report_qor > ../reports/${top_design}.$stage.qor.rpt
 #report_constraint -all_viol > ../reports/${top_design}.$stage.constraint.rpt
-report_timing -max_path 1000 > ../reports/${top_design}.$stage.timing.max.rpt
+report_timing -max_path 100 > ../reports/${top_design}.$stage.timing.max.rpt
 check_timing_intent -verbose  > ../reports/${top_design}.$stage.check_timing.rpt
 check_design  > ../reports/${top_design}.$stage.check_design.rpt
 #check_mv_design  > ../reports/${top_design}.$stage.mvrc.rpt
