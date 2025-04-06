@@ -123,3 +123,10 @@ dc_shell: Nothing in flow yet.  source a script after synth like:
 Fusion Compiler with no floorplan
 ##########################################################
 nofp 1 inside of<design_name>.design_config.tcl
+
+Cadence PODV2
+##########################################################
+Put this inside of <design_name>.pre.place.tcl and <design_name>.pre.cts.tcl
+set_db opt_enable_podv2_clock_opt_flow false
+# In future, we could remove the syn_opt inside of genus-phys.tcl to save runtime if we are doing PODV2
+

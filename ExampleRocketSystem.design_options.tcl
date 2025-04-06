@@ -70,32 +70,58 @@ if { [info exists synopsys_program_name ] } {
 
 } else {
 
-    # Try reducing the search and repair iterations for now.
+        #set_max_transition 0.1 -clock_path $cts_clks
+        if [is_common_ui_mode ] { set_db cts_target_max_transition_time 0.3ns
+        } else { set_ccopt_property target_max_trans 0.3ns }
 
-    setNanoRouteMode -drouteEndIteration 5 
-    #setNanoRouteMode -drouteEndIteration 0
+        # Try reducing the search and repair iterations for now.
+    
+        if [is_common_ui_mode ] { set_db route_design_detail_end_iteration 5 
+        } else { setNanoRouteMode -drouteEndIteration 5 }
+    
+        if [is_common_ui_mode ] {
+            if { [ regexp 23 [get_db program_version] ] } { set_db opt_enable_podv2_clock_opt_flow false }
+            set_db design_early_clock_flow false
+            #set_db route_design_with_via_in_pin true
+            set_db route_design_with_via_only_for_block_cell_pin false
+            set_db route_design_with_via_only_for_stdcell_pin 1:1
+            set_db opt_useful_skew false
+            set_db opt_useful_skew_ccopt none
+            set_db opt_useful_skew_post_route false
+            set_db opt_useful_skew_pre_cts false
+        } else {
+     if { [ regexp 23 [get_db program_version] ] } {  setOptMode -opt_enable_podv2_clock_opt_flow false }
+            setDesignMode -earlyClockFlow false
+            #setNanoRouteMode -routeWithViaInPin true
+            #setNanoRouteMode -routeWithViaInPin 1:1
+            setNanoRouteMode -routeWithViaOnlyForMacroCellPin false
+            setNanoRouteMode -routeWithViaOnlyForStandardCellPin 1:1
+        
+            setOptMode -usefulSkew false
+            setOptMode -usefulSkewCCOpt none
+            setOptMode -usefulSkewPostRoute false
+            setOptMode -usefulSkewPreCTS false
+        }    
 
-    #setNanoRouteMode -routeWithViaInPin true
-    #setNanoRouteMode -routeWithViaInPin 1:1
-    setNanoRouteMode -routeWithViaOnlyForMacroCellPin false
-    setNanoRouteMode -routeWithViaOnlyForStandardCellPin 1:1
-
-    setDesignMode -earlyClockFlow false
-    setOptMode -usefulSkew false
-    setOptMode -usefulSkewCCOpt none
-    setOptMode -usefulSkewPostRoute false
-    setOptMode -usefulSkewPreCTS false
 
     #Cadence method.  Not floating with these statements
-    setPinAssignMode -pinEditInBatch true
+        if [is_common_ui_mode ] { set_db assign_pins_edit_in_batch true 
+        } else { setPinAssignMode -pinEditInBatch true }
     set all_ports [ get_ports * ]
     set num_ports [ sizeof_collection $all_ports ]
     # Split the ports into two balanced collections
     set ports1 [ range_collection $all_ports 0 [expr $num_ports / 2 ] ]
     set ports2 [ range_collection $all_ports [expr ($num_ports / 2 ) + 1 ]  [ expr $num_ports - 1 ]  ]
-    # put the two collections on to two layers of ports
-    editPin -edge 3 -pin [get_attribute $ports1 full_name ] -layer M6 -spreadDirection counterclockwise -spreadType START -offsetStart 900 -spacing 1 -unit MICRON -fixedPin 1 
-    editPin -edge 3 -pin [get_attribute $ports2 full_name ] -layer M8 -spreadDirection counterclockwise -spreadType START -offsetStart 900 -spacing 1 -unit MICRON -fixedPin 1 
-    setPinAssignMode -pinEditInBatch false
+
+        if [is_common_ui_mode ] {
+         edit_pin -edge 3 -pin [get_db $ports1 .name ] -layer M6 -spread_direction counterclockwise -spread_type start -offset_start 900 -spacing 1 -unit micron -fixed_pin 1 
+         edit_pin -edge 3 -pin [get_db $ports1 .name ] -layer M8 -spread_direction counterclockwise -spread_type start -offset_start 900 -spacing 1 -unit micron -fixed_pin 1 
+        } else {
+        # put the two collections on to two layers of ports
+            editPin -edge 3 -pin [get_attribute $ports1 full_name ] -layer M6 -spreadDirection counterclockwise -spreadType START -offsetStart 900 -spacing 1 -unit MICRON -fixedPin 1 
+            editPin -edge 3 -pin [get_attribute $ports2 full_name ] -layer M8 -spreadDirection counterclockwise -spreadType START -offsetStart 900 -spacing 1 -unit MICRON -fixedPin 1 
+            }
+        if [is_common_ui_mode ] { set_db assign_pins_edit_in_batch false
+        } else { setPinAssignMode -pinEditInBatch false }
 
 }
