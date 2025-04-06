@@ -5,10 +5,20 @@
 ## /pkgs/cadence/2019-03/INNOVUS171/bin/innovus
 ## not /pkgs/cadence/2019-03/GENUS171/bin/innovus
 ##
-## You need this as well in your .profile to get your libraries loaded correctly
+## You might need this or something similar as well in your .profile to get your libraries loaded correctly
 ## LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/pkgs/cadence/2019-03/SSV171/tools.lnx86/lib/64bit/"
-## You might see this error otherwise.
+## if you see this error.
 ## **ERROR: (IMPCCOPT-3092):	Couldn't load external LP solver library. Error returned:
+
+proc logfile_name {} {
+   global top_design
+   global flow
+   if { ! [info exists top_design ] } { set top_design "" }
+   set systemTime [clock seconds] 
+   set timefield  [clock format $systemTime -format %y-%m-%d_%H-%m] 
+   set_db log_file innovus.log.$top_design.$flow.$timefield 
+   set_db logv_file innovus.logv.$top_design.$flow.$timefield 
+}
 
 proc innovus_reporting { stage postcts postroute } {
 global top_design
@@ -41,6 +51,10 @@ global top_design
    report_summary -no_html -out_file ../reports/${top_design}.innovus.$stage.summary.rpt
 }
 
+if { ! [ info exists flow ] } { set flow "fpcr" }
+
+logfile_name
+
 source ../../$top_design.design_config.tcl
 
 set designs [get_db designs * ]
@@ -48,7 +62,6 @@ if { $designs != "" } {
   delete_obj $designs
 }
 
-if { ! [ info exists flow ] } { set flow "fpcr" }
 
 ####### STARTING INITIALIZE and FLOORPLAN #################
 if { [regexp -nocase "f" $flow ] } {
