@@ -114,7 +114,7 @@ if { [regexp -nocase "f" $flow ] } {
 ######## PLACE #################
 if { [regexp -nocase "p" $flow ] } {
     if { ![regexp -nocase "f" $flow ] } {
-       read_db ${top_design}_floorplan.innovus }
+       read_db ${top_design}_floorplan.innovus.cui }
     puts "######## STARTING PLACE #################"
 set_db design_early_clock_flow false
 set_db opt_useful_skew false
@@ -138,7 +138,7 @@ if { [ regexp 23 [get_db program_version] ] } { set_db opt_enable_podv2_clock_op
 ######## STARTING CLOCK_OPT #################
 if { [regexp -nocase "c" $flow ] } {
     if { ![regexp -nocase "f" $flow ] && ![regexp -nocase "p" $flow ]  } {
-       read_db ${top_design}_place.innovus } elseif { [regexp -nocase "f" $flow ] && ![regexp -nocase "p" $flow ] } {
+       read_db ${top_design}_place.innovus.cui } elseif { [regexp -nocase "f" $flow ] && ![regexp -nocase "p" $flow ] } {
        puts "FLOW ERROR: You are trying to run route and skipping some but not all earlier stages"
        return -level 1 
     }
@@ -205,7 +205,7 @@ if { [regexp "23" [get_db program_version] ] } { if { [get_db opt_enable_podv2_c
 ######## ROUTE_OPT #################
 if { [regexp -nocase "r" $flow ] } {
     if { ![regexp -nocase "f" $flow ] && ![regexp -nocase "p" $flow ] && ![regexp -nocase "c" $flow ] } {
-       read_db ${top_design}_postcts.innovus } elseif { ([regexp -nocase "f" $flow ] && ! [regexp -nocase "p" $flow ] ) ||
+       read_db ${top_design}_postcts.innovus.cui } elseif { ([regexp -nocase "f" $flow ] && ! [regexp -nocase "p" $flow ] ) ||
                ([regexp -nocase "f" $flow ] && ! [regexp -nocase "c" $flow ] ) ||
                ([regexp -nocase "p" $flow ] && ! [regexp -nocase "c" $flow ] )  } {
        puts "FLOW ERROR: You are trying to run route and skipping some but not all earlier stages"
