@@ -16,7 +16,7 @@ if { [info exists synopsys_program_name ] && ( ($synopsys_program_name == "icc2_
     #set_scenario_status  default -active false
     set_scenario_status func_slow -active true -hold true -setup true
 } else {
-    set_operating_condition ss0p95v125c -library saed32lvt_ss0p95v125c
+    #set_operating_condition ss0p95v125c -library saed32lvt_ss0p95v125c
 }
 
 puts " Setting up normal constraints "
