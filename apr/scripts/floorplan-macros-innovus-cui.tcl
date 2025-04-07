@@ -1,3 +1,13 @@
+proc logfile_name {} {
+   global top_design
+   if { ! [info exists top_design ] } { set top_design "" }
+   set systemTime [clock seconds] 
+   set timefield  [clock format $systemTime -format %y-%m-%d_%H-%m] 
+   set_db log_file innovus.log.$top_design.m.$timefield 
+   set_db logv_file innovus.logv.$top_design.m.$timefield 
+}
+logfile_name
+
 source ../../$top_design.design_config.tcl
 
 set designs [get_db designs * ]
