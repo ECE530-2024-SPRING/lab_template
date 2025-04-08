@@ -238,7 +238,7 @@ set_db route_design_detail_post_route_spread_wire false
     innovus_reporting $stage 1  1   
     #report_power > ../reports/${top_design}.ROUTE_power_from_innovus_tcl.rpt
     #report_area > ../reports/${top_design}.ROUTE_area_from_innovus_tcl.rpt
-    report_power > ../reports/${top_design}.innvous.${stage}.power.rpt
+    #report_power > ../reports/${top_design}.innvous.${stage}.power.rpt
     # output netlist.  Look in the Saved Design Directory for the netlist
     #write_hdl $top_design > ../outputs/${top_design}.$stage.vg
     write_netlist ../outputs/${top_design}.$stage.innovus.vg 
