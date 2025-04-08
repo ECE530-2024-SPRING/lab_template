@@ -39,7 +39,11 @@ cd ../../apr/work
 icc2_shell  (or innovus -stylus)
 # Indicate to set the top design to fifo1.  There is an alias defined in .synopsys_dc.setup and enc.tcl
 fs
-# If you only want to run part of the flow, you can set flow "fpcr"  where f=floorplan, p=place, c=clock, r=route.
+# If you only want to run part of the flow, you can set flow in Innovus to "fpcr"  where f=floorplan, p=place, c=clock, r=route.
+# Or inside Icc2/Fusion_compiler, use "fpcor" where f=floorpaln, p=place, c=clock, o=optimize, r=route.
+# or parts of the flow like just "fp" for just floorplan and place.  They must be in the correct order and without skipping steps 
+# and step must have been run before.
+
 # If using FusionCompiler fc_shell and wanting to read RTL and bypassing physical synth, do this command: set fc_rtl 1
 source ../scripts/icc2.tcl  (or ../scripts/innovus-cui.tcl)
 # If you rerun flow, either close_lib, then rerun, or exit the icc2_shell and reenter.  (or just source ../scripts/innovus.tcl?)
