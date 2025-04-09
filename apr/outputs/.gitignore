@@ -2,5 +2,5 @@
 *.def*
 *.upf*
 *.spef*
-!*.macros.def*
+!*.macros*def*
 
