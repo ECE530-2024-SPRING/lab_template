@@ -1,0 +1,219 @@
+set upf_create_implicit_supply_sets false
+
+#POWER DOMAIN TOP
+create_power_domain PD_MOD_TOP -include_scope 
+create_supply_port -domain PD_MOD_TOP -direction in {VDDH} 
+create_supply_port -domain PD_MOD_TOP -direction in {VDDL} 
+create_supply_port -domain PD_MOD_TOP {VSS}
+create_supply_net VDDH -domain PD_MOD_TOP
+create_supply_net VDDL -domain PD_MOD_TOP
+create_supply_net VSS -domain PD_MOD_TOP
+connect_supply_net VDDH -ports {VDDH}
+connect_supply_net VDDL -ports {VDDL}
+connect_supply_net VSS -ports {VSS}
+set_domain_supply_net PD_MOD_TOP \
+-primary_power_net {VDDH} \
+-primary_ground_net {VSS}
+#add_port_state VDDH  -state {OFF 0.00}  -state {ON 1.16}
+#add_port_state VDDL  -state {OFF 0.00}  -state {ON 0.85}
+#add_port_state VSS -state {VSS_OFF 0.00}
+add_port_state VDDH  -state {ON 1.16}
+add_port_state VDDL  -state {ON 0.85}
+add_port_state VSS -state {VSS_OFF 0.00}
+
+
+#POWER DOMAIN MODULE A
+create_power_domain PD_MOD_AH -elements {module_A_inst} 
+create_supply_net VDD_AH_OUT -domain PD_MOD_AH -resolve parallel
+set_domain_supply_net PD_MOD_AH \
+-primary_power_net {VDD_AH_OUT} \
+-primary_ground_net {VSS}
+
+add_port_state VDD_AH_OUT -state {OFF 0.00}  -state {ON 1.16}
+
+# Create power switch and output supply net.
+create_power_switch SW_AH -domain PD_MOD_AH \
+-output_supply_port {vout VDD_AH_OUT} \
+-input_supply_port {vin VDDH} \
+-control_port {ms_sel ctrl_b} \
+-on_state {ON vin {!ms_sel} }
+
+map_power_switch SW_AH \
+-domain PD_MOD_AH \
+-lib_cells HEADX2_HVT
+
+
+#POWER DOMAIN MODULE B
+create_power_domain PD_MOD_BH -elements {module_B_inst} 
+create_supply_net VDD_BH_OUT -domain PD_MOD_BH -resolve parallel
+set_domain_supply_net PD_MOD_BH \
+-primary_power_net {VDD_BH_OUT} \
+-primary_ground_net {VSS}
+
+add_port_state VDD_BH_OUT -state {OFF 0.00}  -state {ON 1.16}
+
+# Create power switch and output supply net.
+create_power_switch SW_BH -domain PD_MOD_BH \
+-output_supply_port {vout VDD_BH_OUT} \
+-input_supply_port {vin VDDH} \
+-control_port {ms_sel ctrl_c} \
+-on_state {ON vin {!ms_sel} }
+
+map_power_switch SW_BH \
+-domain PD_MOD_BH \
+-lib_cells HEADX2_HVT
+
+
+
+#POWER DOMAIN MODULE C
+create_power_domain PD_MOD_CL -elements {module_C_inst} 
+create_supply_net VDD_CL_OUT -domain PD_MOD_CL -resolve parallel
+set_domain_supply_net PD_MOD_CL \
+-primary_power_net {VDD_CL_OUT} \
+-primary_ground_net {VSS}
+
+add_port_state VDD_CL_OUT -state {OFF 0.00}  -state {ON 0.85}
+
+# Create power switch and output supply net.
+create_power_switch SW_CL -domain PD_MOD_CL \
+-output_supply_port {vout VDD_CL_OUT} \
+-input_supply_port {vin VDDL} \
+-control_port {ms_sel ctrl_d} \
+-on_state {ON vin {!ms_sel} }
+
+map_power_switch SW_CL \
+-domain PD_MOD_CL \
+-lib_cells HEADX2_HVT
+
+
+#POWER DOMAIN MODULE D
+create_power_domain PD_MOD_DL -elements {module_D_inst} 
+create_supply_net VDD_DL_OUT -domain PD_MOD_DL -resolve parallel
+set_domain_supply_net PD_MOD_DL \
+-primary_power_net {VDD_DL_OUT} \
+-primary_ground_net {VSS}
+
+add_port_state VDD_DL_OUT -state {OFF 0.00}  -state {ON 0.85}
+
+# Create power switch and output supply net.
+create_power_switch SW_DL -domain PD_MOD_DL \
+-output_supply_port {vout VDD_DL_OUT} \
+-input_supply_port {vin VDDL} \
+-control_port {ms_sel ctrl_e} \
+-on_state {ON vin {!ms_sel} }
+
+map_power_switch SW_DL \
+-domain PD_MOD_DL \
+-lib_cells HEADX2_HVT
+
+
+set_isolation ISO_A \
+-domain PD_MOD_AH \
+-applies_to outputs \
+-clamp_value 1 \
+-isolation_power_net VDDH \
+-isolation_ground_net VSS
+
+set_isolation_control ISO_A \
+-domain PD_MOD_AH \
+-isolation_signal Isolb \
+-isolation_sense high \
+-location parent
+
+
+set_isolation ISO_B \
+-domain PD_MOD_BH \
+-applies_to outputs \
+-clamp_value 1 \
+-isolation_power_net VDDH \
+-isolation_ground_net VSS
+
+
+set_isolation_control ISO_B \
+-domain PD_MOD_BH \
+-isolation_signal Isolc \
+-isolation_sense high \
+-location parent
+
+set_isolation ISO_C \
+-domain PD_MOD_CL \
+-applies_to outputs \
+-clamp_value 1 \
+-isolation_power_net VDDL \
+-isolation_ground_net VSS
+
+set_isolation_control ISO_C \
+-domain PD_MOD_CL \
+-isolation_signal Isold \
+-isolation_sense high \
+-location parent
+
+set_isolation ISO_D \
+-domain PD_MOD_DL \
+-applies_to outputs \
+-clamp_value 1 \
+-isolation_power_net VDDL \
+-isolation_ground_net VSS
+
+set_isolation_control ISO_D \
+-domain PD_MOD_DL \
+-isolation_signal Isole \
+-isolation_sense high \
+-location parent
+
+#power state table
+#create_pst power_state_table -supplies {VDD_TOPH VDD_AH VDD_BH VDD_CL VDD_DL VSS}
+#add_pst_state PS_1 -pst power_state_table -state { ON ON ON ON ON VSS_OFF}
+create_pst power_state_table -supplies           {VDDH     VDDL     VDD_AH_OUT VDD_BH_OUT VDD_CL_OUT VDD_DL_OUT VSS}
+#add_pst_state PS_1 -pst power_state_table -state { ON ON ON ON ON VSS_OF ON ON ON ON}
+add_pst_state PS_2 -pst power_state_table -state { ON      ON       ON         ON         ON         ON         VSS_OFF}
+#add_pst_state PS_3 -pst power_state_table -state { ON OFF ON ON VSS_OF}
+#add_pst_state PS_4 -pst power_state_table -state { ON ON OFF ON VSS_OF}
+#add_pst_state PS_5 -pst power_state_table -state { ON ON ON OFF VSS_OF}
+#add_pst_state PS_6 -pst power_state_table -state { ON OFF OFF OFF VSS_OF}
+#add_pst_state PS_7 -pst power_state_table -state { ON OFF ON OFF VSS_OF}
+#add_pst_state PS_8 -pst power_state_table -state { ON ON OFF OFF VSS_OF}
+#add_pst_state PS_9 -pst power_state_table -state { OFF ON ON ON VSS_OF}
+#add_pst_state PS_10 -pst power_state_table -state { OFF OFF OFF ON VSS_OF}
+#add_pst_state PS_11 -pst power_state_table -state { OFF OFF ON ON VSS_OF}
+#add_pst_state PS_12 -pst power_state_table -state { OFF ON OFF ON VSS_OF}
+#add_pst_state PS_13 -pst power_state_table -state { OFF ON ON OFF VSS_OF}
+#add_pst_state PS_14 -pst power_state_table -state { OFF OFF OFF OFF VSS_OF}
+#add_pst_state PS_15 -pst power_state_table -state { OFF OFF ON OFF VSS_OF}
+#add_pst_state PS_16 -pst power_state_table -state { OFF ON OFF OFF VSS_OF}
+
+#The strategy is defined to prevent the tool from applying unnecessary Level shifter. The tool applies the level shifter even without the strategy. But applying strategy prevents unnecessary Level shifters.
+set_level_shifter LSup \
+-domain PD_MOD_CL \
+-threshold 0.00 \
+-applies_to outputs \
+-rule low_to_high \
+-location parent
+
+map_level_shifter_cell LSup -domain PD_MOD_CL \
+-lib_cells LSUPX1_HVT
+#-lib_cells {LSDNENX8_HVT,LSDNX8_HVT,LSDNSSX8_HVT,LSDNENCLSSX8_HVT,LSDNENCLX8_HVT,LSDNENSSX8_HVT}
+
+use_interface_cell LSX1 \
+-domain PD_MOD_CL \
+-strategy LSup \
+-lib_cells LSUPX1_HVT
+#-lib_cells {LSDNENX8_HVT,LSDNX8_HVT,LSDNSSX8_HVT,LSDNENCLSSX8_HVT,LSDNENCLX8_HVT,LSDNENSSX8_HVT}
+
+set_level_shifter LSup1 \
+-domain PD_MOD_DL \
+-threshold 0.00 \
+-applies_to outputs \
+-rule low_to_high \
+-location parent
+
+map_level_shifter_cell LSup1 -domain PD_MOD_DL \
+-lib_cells LSUPX1_HVT
+#-lib_cells {LSDNENX8_HVT,LSDNX8_HVT,LSDNSSX8_HVT,LSDNENCLSSX8_HVT,LSDNENCLX8_HVT,LSDNENSSX8_HVT}
+
+use_interface_cell LSX1 \
+-domain PD_MOD_DL \
+-strategy LSup1 \
+-lib_cells LSUPX1_HVT
+#-lib_cells {LSDNENX8_HVT,LSDNX8_HVT,LSDNSSX8_HVT,LSDNENCLSSX8_HVT,LSDNENCLX8_HVT,LSDNENSSX8_HVT}
+
