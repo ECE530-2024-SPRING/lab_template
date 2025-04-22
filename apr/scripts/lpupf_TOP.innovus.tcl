@@ -194,7 +194,7 @@ if {1==0} {
     write_def ../outputs/$top_design.def -floorplan
 }
 
-write_power_intent ../outputs/$top_deisgn.innovus-cui.upf -1801
+write_power_intent ../outputs/$top_design.innovus-cui.upf -1801
 
 # Save netlist along with power and ground connections for LP verification.
 write_netlist ../outputs/$top_design.pg.vg -phys -include_pg_ports
