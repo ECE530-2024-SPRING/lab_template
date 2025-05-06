@@ -59,7 +59,8 @@ source ../../$top_design.design_config.tcl
 
 set designs [get_db designs * ]
 if { $designs != "" } {
-  delete_obj $designs
+   reset_design
+   #delete_obj $designs
 }
 
 

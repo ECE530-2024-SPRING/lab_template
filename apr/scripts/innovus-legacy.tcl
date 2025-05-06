@@ -46,7 +46,8 @@ source -echo -verbose ../../$top_design.design_config.tcl
 
 set designs [get_db designs * ]
 if { $designs != "" } {
-  delete_obj $designs
+   freeDesign
+   #delete_obj $designs
 }
 
 if { ! [ info exists flow ] } { set flow "fpcr" }
